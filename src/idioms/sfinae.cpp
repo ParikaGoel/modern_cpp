@@ -16,7 +16,7 @@
 
 // Example of SFINAE
 // Function implementation for integer value
-template <typename T, std::enable_if_t<std::is_integral_v<T>,int> = 0>
+template <typename T, std::enable_if_t<std::is_integral_v<T>,T> = 0>
 void func(T val)
 {
     std::cout << "integral func called\n";
@@ -29,9 +29,9 @@ void func(U val)
     std::cout << "floating point func called\n";
 }
 
-int main()
-{
-    func(10);
-    func(4.5);
-    return 0;
-}
+// int main()
+// {
+//     func(10);
+//     func(4.5);
+//     return 0;
+// }
