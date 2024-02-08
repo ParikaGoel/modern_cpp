@@ -7,6 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(SOURCES
     src/idioms/crtp.cpp
     src/idioms/raii.cpp
+    src/idioms/rtr.cpp
     src/main.cpp)
 
 add_executable(modern_cpp ${SOURCES})
