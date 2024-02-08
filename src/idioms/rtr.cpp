@@ -1,6 +1,8 @@
 // RTR - Return Type Resolver
 // Also known as return type overloading
 // To deduce the type of object being assigned to 
+// Example: when using nullptr, this is the technique used under the hood to determine
+// the type of the pointer it is being assigned to
 #include <string>
 #include <iostream>
 
@@ -38,6 +40,7 @@ class from_string{
 // {
 //     std::cout << int(from_string("123")) << "\n";
 //     std::cout << double(from_string("123.456")) << "\n";
+//      int a = from_string("123"); // calls int() under the hood
 //     return 0;
 // }
 
