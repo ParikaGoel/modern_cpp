@@ -27,11 +27,8 @@ class LimitInstance{
         }
 
     private:
-        static std::atomic<int> _ninstances;
+        static inline std::atomic<int> _ninstances{0};
 };
-
-template<int N_MAX, class Derived>
-std::atomic<int> LimitInstance<N_MAX, Derived>::_ninstances = 0;
 
 class Derived1: public LimitInstance<2, Derived1>
 {
