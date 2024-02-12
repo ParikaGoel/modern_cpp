@@ -5,23 +5,20 @@
 #include <span>
 #include <any>
 #include <string>
+#include <map>
+#include <string>
 
-// int main()
-// {
-//     std::any val;
-//     val = 42;
-//     val = std::string("Hello, std::any!");
+#include "helpers/printing.h"
 
-//     try{
-//         if (std::any_cast<int>(&val))
-//             std::cout << std::any_cast<int>(val) << "\n";
-//         else if(std::any_cast<std::string>(&val))
-//             std::cout << std::any_cast<std::string>(val) << "\n";
-//     }
-//     catch(const std::bad_any_cast& e)
-//     {
-//         std::cout << "Error: " << e.what() << "\n";
-//     }
+int main()
+{
+    std::map<int, std::string> val1 = {{1,"one"},{2,"two"},{3,"three"}};
+    std::vector<int> val2 = {1, 2, 3, 4, 5, 6};
+    std::string val3 = "Hi Parika";
 
-//     return 0;
-// }
+    print(val1);
+    print(val2);
+    print(val3);
+
+    return 0;
+}
