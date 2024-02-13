@@ -19,6 +19,7 @@ int main()
     print(val1);
     print(val2);
     print(val3);
+    print(42);
 
     return 0;
 }

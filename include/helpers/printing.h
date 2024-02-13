@@ -4,6 +4,7 @@
 #include <concepts>
 #include <iostream>
 #include <map>
+#include <string>
 #include <unordered_map>
 #include <type_traits>
 
@@ -14,15 +15,6 @@ struct is_random_access_iterator{
                                     typename std::iterator_traits<Iterator>::iterator_category,
                                     std::random_access_iterator_tag>;
 };
-
-/*-----------------Concept to check if type is a stl container---------------------*/
-template <typename ContType>
-concept STLCont = requires(ContType cont){
-    cont.begin();
-    cont.end();
-};
-/*---------------------------------------------------------------------------------------*/
-
 
 /*-----------------Structures to check if the template type is stl map---------------------*/
 template<typename map_type>
@@ -46,19 +38,34 @@ struct is_map<std::multimap<K, V>>{
 };
 /*---------------------------------------------------------------------------------------*/
 
+/*-----------------Concept to check if type is a stl container---------------------*/
+// Conditions inside require works for map and string also
+// Explicitly excluding them
+template <typename ContType>
+concept STLCont = requires(ContType cont){
+    {cont.begin()} -> std::same_as<typename ContType::iterator>;
+    {cont.end()} -> std::same_as<typename ContType::iterator>;
+} && !std::is_same_v<std::string, ContType> 
+&& !is_map<ContType>::value;
+/*---------------------------------------------------------------------------------------*/
+
+/*-----------------Concept to check if type is built in type or string---------------------*/
+template <typename Type>
+concept BuiltIn = std::is_same_v<std::string, Type> || std::is_arithmetic_v<Type>;
+/*---------------------------------------------------------------------------------------*/
+
 /*-----------------------------------PRINT FUNCTIONS-------------------------------------*/
 
-// For built in types
-// template <typename Type>
-// void print(const Type& m)
-// {
-//     std::cout << m << "\n";
-// }
+// For built in types & std::string class
+template <typename Type>
+requires BuiltIn<Type>
+void print(const Type& m)
+{
+    std::cout << m << "\n";
+}
 
 // All STL Containers except maps
-// Bug: works for std::string also
-template <typename ContainerType, 
-        typename std::enable_if<!is_map<ContainerType>::value, ContainerType>::type* = nullptr>
+template <typename ContainerType>
 requires STLCont<ContainerType>
 void print(const ContainerType& m)
 {
@@ -76,6 +83,5 @@ void print(const ContainerType& m)
         std::cout << "{" << k << "," << v << "}  ";
     std::cout << "\n";
 }
-
 
 #endif // PRINTING_H
