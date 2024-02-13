@@ -16,6 +16,11 @@ struct is_random_access_iterator{
                                     std::random_access_iterator_tag>;
 };
 
+/*-----------------Concept to check if type is built in type or string---------------------*/
+template <typename Type>
+concept BuiltIn = std::is_same_v<std::string, Type> || std::is_arithmetic_v<Type>;
+/*---------------------------------------------------------------------------------------*/
+
 /*-----------------Structures to check if the template type is stl map---------------------*/
 template<typename map_type>
 struct is_map{
@@ -41,17 +46,14 @@ struct is_map<std::multimap<K, V>>{
 /*-----------------Concept to check if type is a stl container---------------------*/
 // Conditions inside require works for map and string also
 // Explicitly excluding them
-template <typename ContType>
+// enable_if makes sure concept definition fails for recursive containers e.g. vector<vector<int>>
+template <typename ContType, 
+    std::enable_if_t< BuiltIn<typename ContType::value_type>, int>* = nullptr>
 concept STLCont = requires(ContType cont){
     {cont.begin()} -> std::same_as<typename ContType::iterator>;
     {cont.end()} -> std::same_as<typename ContType::iterator>;
 } && !std::is_same_v<std::string, ContType> 
 && !is_map<ContType>::value;
-/*---------------------------------------------------------------------------------------*/
-
-/*-----------------Concept to check if type is built in type or string---------------------*/
-template <typename Type>
-concept BuiltIn = std::is_same_v<std::string, Type> || std::is_arithmetic_v<Type>;
 /*---------------------------------------------------------------------------------------*/
 
 /*-----------------------------------PRINT FUNCTIONS-------------------------------------*/
